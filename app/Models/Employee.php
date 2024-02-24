@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EmployeeStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +14,7 @@ class Employee extends Model
 
     protected $casts = [
         'joined' => 'date',
+        'status' => EmployeeStatus::class,
     ];
 
     public function leaveRequests(): HasMany
