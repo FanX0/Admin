@@ -16,20 +16,26 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class DepartmentResource extends Resource
 {
     protected static ?string $model = Department::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ? string $navigationGroup = 'Resources';
+    protected static ?string $navigationIcon = 'heroicon-o-home-modern';
 
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->maxLength(65535)
-                    ->columnSpanFull(),
-            ]);
+            ->schema(self::getFormFields());
+    }
+
+    public static function getFormFields():array
+    {
+        return [
+            Forms\Components\TextInput::make('name')
+                ->required()
+                ->maxLength(255),
+            Forms\Components\Textarea::make('description')
+                ->maxLength(65535)
+                ->columnSpanFull(),
+            Forms\Components\Toggle::make('active')
+        ];
     }
 
     public static function table(Table $table): Table
@@ -38,6 +44,10 @@ class DepartmentResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\ToggleColumn::make('active'),
+                    // ->formatStateUsing(fn ($state) => $state == 1 ? 'Active' : 'Inactive')
+                    // ->badge()
+                    // ->color(fn ($state)=> $state == 1 ? 'primary' : 'danger'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -48,7 +58,9 @@ class DepartmentResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                Tables\Filters\TernaryFilter::make('active')
+                    ->boolean(),
+               
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

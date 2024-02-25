@@ -13,6 +13,8 @@ class LeaveRequest extends Model
     protected $casts = [
         'start_date' => 'date',
         'end_date' => 'date',
+        'type' =>  \App\Enums\LeaveRequestType::class,
+        'status' =>  \App\Enums\LeaveRequestStatus::class,
     ];
 
     public function employee(): BelongsTo

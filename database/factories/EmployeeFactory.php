@@ -7,6 +7,7 @@ use Illuminate\Support\Str;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\Position;
+use App\Enums\EmployeeStatus;
 
 class EmployeeFactory extends Factory
 {
@@ -23,12 +24,12 @@ class EmployeeFactory extends Factory
     public function definition(): array
     {
         return [
-            'department_id' => Department::factory(),
-            'position_id' => Position::factory(),
+            'department_id' => rand(1, 3),
+            'position_id' => rand(1, 3),
             'name' => $this->faker->name(),
             'email' => $this->faker->safeEmail(),
             'joined' => $this->faker->date(),
-            'status' => $this->faker->word(),
+            'status' => collect(EmployeeStatus::cases())->random(),
         ];
     }
 }

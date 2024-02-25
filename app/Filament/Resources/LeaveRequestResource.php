@@ -16,28 +16,37 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class LeaveRequestResource extends Resource
 {
     protected static ?string $model = LeaveRequest::class;
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ? string $navigationGroup = 'Employee Management';
+    protected static ? int $navigationSort = 3 ;
+    protected static ?string $navigationIcon = 'heroicon-o-calendar';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\Select::make('employee_id')
+                Forms\Components\Fieldset::make('Employee Title')->schema([   
+                    Forms\Components\Select::make('employee_id')
                     ->relationship('employee', 'name')
                     ->prefixIcon('heroicon-o-user')
                     ->required(),
-                Forms\Components\DatePicker::make('start_date')
+                ]),
+                Forms\Components\Section::make('Start Ending') 
+                    ->columns(2)
+                    ->schema([
+                    Forms\Components\DatePicker::make('start_date')
                     ->required(),
-                Forms\Components\DatePicker::make('end_date')
+                    Forms\Components\DatePicker::make('end_date')
                     ->required(),
-                Forms\Components\TextInput::make('type')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('reason')
+                ]),
+                Forms\Components\Select::make('type')
+                    ->enum(\App\Enums\LeaveRequestType::class)
+                    ->options(\App\Enums\LeaveRequestType::class)
+                    ->required(),
+                Forms\Components\Select::make('status')
+                    ->enum(\App\Enums\LeaveRequestStatus::class)
+                    ->options(\App\Enums\LeaveRequestStatus::class)
+                    ->required(),
+                Forms\Components\MarkdownEditor::make('reason')
                     ->maxLength(65535)
                     ->columnSpanFull(),
             ]);

@@ -5,6 +5,12 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+use App\Models\User;
+use App\Models\Department;
+use App\Models\Position;
+use App\Models\Employee;
+
+
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -12,11 +18,27 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // \App\Models\User::factory(10)->create();
+       User::create ([
+            'name' => 'Farid Azhari',
+            'email' => 'farid@test.com',
+            'password' => bcrypt('farid123'),
+            'email_verified_at' => now(),
+       ]);
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+       collect ([
+            ['name' => 'IT', 'active' => true],
+            ['name' => 'HR', 'active' => true],
+            ['name' => 'Finance', 'active' => false],
+       ])->each(fn ($item) => Department::create($item));
+
+       
+       collect ([
+        ['name' => 'Software Engineer', ],
+        ['name' => 'HR Manager', ],
+        ['name' => 'Finance Analyst', ],
+        ])->each(fn ($item) => Position::create($item));
+
+
+        Employee::factory(20)->create();
     }
 }
