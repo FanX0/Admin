@@ -3,13 +3,11 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Seeder;
-
-use App\Models\User;
 use App\Models\Department;
-use App\Models\Position;
 use App\Models\Employee;
-
+use App\Models\Position;
+use App\Models\User;
+use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -18,26 +16,24 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-       User::create ([
+        User::create([
             'name' => 'Farid Azhari',
             'email' => 'farid@test.com',
             'password' => bcrypt('farid123'),
             'email_verified_at' => now(),
-       ]);
+        ]);
 
-       collect ([
+        collect([
             ['name' => 'IT', 'active' => true],
             ['name' => 'HR', 'active' => true],
             ['name' => 'Finance', 'active' => false],
-       ])->each(fn ($item) => Department::create($item));
+        ])->each(fn ($item) => Department::create($item));
 
-       
-       collect ([
-        ['name' => 'Software Engineer', ],
-        ['name' => 'HR Manager', ],
-        ['name' => 'Finance Analyst', ],
+        collect([
+            ['name' => 'Software Engineer'],
+            ['name' => 'HR Manager'],
+            ['name' => 'Finance Analyst'],
         ])->each(fn ($item) => Position::create($item));
-
 
         Employee::factory(20)->create();
     }

@@ -18,6 +18,7 @@ namespace App\Models{
  * @property int $id
  * @property string $name
  * @property string|null $description
+ * @property int $active
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Employee> $employees
@@ -26,6 +27,7 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder|Department newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Department newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Department query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Department whereActive($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Department whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Department whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Department whereId($value)
@@ -45,7 +47,7 @@ namespace App\Models{
  * @property string $name
  * @property string $email
  * @property \Illuminate\Support\Carbon $joined
- * @property mixed $status
+ * @property \App\Enums\EmployeeStatus $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Department $department
@@ -79,8 +81,8 @@ namespace App\Models{
  * @property int $employee_id
  * @property \Illuminate\Support\Carbon $start_date
  * @property \Illuminate\Support\Carbon $end_date
- * @property string $type
- * @property string $status
+ * @property \App\Enums\LeaveRequestType $type
+ * @property \App\Enums\LeaveRequestStatus $status
  * @property string|null $reason
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -132,7 +134,7 @@ namespace App\Models{
  *
  * @property int $id
  * @property int $employee_id
- * @property int $amount
+ * @property-write int $amount
  * @property \Illuminate\Support\Carbon $effective_date
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at

@@ -5,11 +5,10 @@ namespace App\Enums;
 use Filament\Support\Contracts\HasLabel;
 
 enum LeaveRequestType: string implements HasLabel
-
 {
-    case ANNUAL = 'pending';
-    case SICK = 'approved';
-    CASE MATERNITY = 'maternity';
+    case ANNUAL = 'Annual';
+    case SICK = 'Sick';
+    case MATERNITY = 'maternity';
     case PATERNITY = 'paternity';
 
     public function getLabel(): ?string

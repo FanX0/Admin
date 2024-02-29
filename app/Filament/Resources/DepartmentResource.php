@@ -3,20 +3,17 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\DepartmentResource\Pages;
-use App\Filament\Resources\DepartmentResource\RelationManagers;
 use App\Models\Department;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class DepartmentResource extends Resource
 {
     protected static ?string $model = Department::class;
-    protected static ? string $navigationGroup = 'Resources';
+    protected static ?string $navigationGroup = 'Resources';
     protected static ?string $navigationIcon = 'heroicon-o-home-modern';
 
     public static function form(Form $form): Form
@@ -25,7 +22,7 @@ class DepartmentResource extends Resource
             ->schema(self::getFormFields());
     }
 
-    public static function getFormFields():array
+    public static function getFormFields(): array
     {
         return [
             Forms\Components\TextInput::make('name')
@@ -34,7 +31,7 @@ class DepartmentResource extends Resource
             Forms\Components\Textarea::make('description')
                 ->maxLength(65535)
                 ->columnSpanFull(),
-            Forms\Components\Toggle::make('active')
+            Forms\Components\Toggle::make('active'),
         ];
     }
 
@@ -45,9 +42,9 @@ class DepartmentResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\ToggleColumn::make('active'),
-                    // ->formatStateUsing(fn ($state) => $state == 1 ? 'Active' : 'Inactive')
-                    // ->badge()
-                    // ->color(fn ($state)=> $state == 1 ? 'primary' : 'danger'),
+                // ->formatStateUsing(fn ($state) => $state == 1 ? 'Active' : 'Inactive')
+                // ->badge()
+                // ->color(fn ($state)=> $state == 1 ? 'primary' : 'danger'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -60,7 +57,7 @@ class DepartmentResource extends Resource
             ->filters([
                 Tables\Filters\TernaryFilter::make('active')
                     ->boolean(),
-               
+
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
