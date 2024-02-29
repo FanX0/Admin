@@ -6,12 +6,16 @@ use App\Enums\LeaveRequestStatus;
 use App\Filament\Resources\EmployeeResource\RelationManagers\LeaveRequestsRelationManager;
 use App\Filament\Resources\LeaveRequestResource\Pages;
 use App\Models\LeaveRequest;
+use Filament\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Notifications\Notification;
+use Filament\Tables\Actions\BulkAction;
+use Illuminate\Support\Collection;
 
 class LeaveRequestResource extends Resource
 {
@@ -35,24 +39,76 @@ class LeaveRequestResource extends Resource
             ])
            
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\Action::make('approve')
-                    ->requiresConfirmation()
-                    ->visible (fn (LeaveRequest $record) => $record->status == LeaveRequestStatus::PENDING)
-                    ->icon('heroicon-m-check-circle')
-                    ->action(function (LeaveRequest $record){
-                        $record->approve();
-                    })->after(function(){
-                        Notification::make()
-                        ->success()
-                        ->title('Approved!')
-                        ->body('The Leave Request has been Approved')
-                        ->send();
-                    }),
+                ActionGroup::make([
+            Tables\Actions\EditAction::make()
+             ->slideOver()
+             ->modalWidth('2xl'),
+         
+         Tables\Actions\Action::make('approve')
+             ->requiresConfirmation()
+             ->color('success')
+             ->visible (fn (LeaveRequest $record) => $record->status == LeaveRequestStatus::PENDING)
+             ->icon('heroicon-m-check-circle')
+             ->action(function (LeaveRequest $record){
+                 $record->approve();
+             })->after(function(){
+                 Notification::make()
+                 ->success()
+                 ->title('Approved!')
+                 ->body('The Leave Request has been Approved')
+                 ->send();
+             }),
+
+         Tables\Actions\Action::make('reject')
+         ->color('danger')
+         ->requiresConfirmation()
+         ->visible (fn (LeaveRequest $record) => $record->status == LeaveRequestStatus::PENDING)
+         ->icon('heroicon-m-minus-circle')
+         ->action(fn (LeaveRequest $record) => $record->reject())->after(function(){
+             Notification::make()
+             ->danger()
+             ->title('Rejected!')
+             ->body('The Leave Request has been Rejected')
+             ->send();
+         }),
+         Action::make('divider')
+         ->label('')
+         ->disabled(),
+
+         Tables\Actions\DeleteAction::make(),
+                
+             ])->color('gray'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    BulkAction::make('approve')
+                    ->requiresConfirmation()
+                    ->color('success')
+                    ->icon('heroicon-m-check-circle')
+                    ->action(fn(Collection $records)=>$records->each->approve())
+                    ->after(function () {
+                        Notification::make()
+                        ->success()
+                        ->title('Approve!')
+                        ->body('The Leave Request has been Approve')
+                        ->send();
+
+                    }),
+             
+                    BulkAction::make('reject')
+                    ->requiresConfirmation()
+                    ->color('danger')
+                    ->icon('heroicon-m-minus-circle')
+                    ->action(fn(Collection $records)=>$records->each->reject())
+                    ->after(function () {
+                        Notification::make()
+                        ->danger()
+                        ->title('Rejected!')
+                        ->body('The Leave Request has been Rejected')
+                        ->send();
+
+                    })
                 ]),
             ]);
     }
@@ -68,8 +124,8 @@ class LeaveRequestResource extends Resource
     {
         return [
             'index' => Pages\ListLeaveRequests::route('/'),
-            'create' => Pages\CreateLeaveRequest::route('/create'),
-            'edit' => Pages\EditLeaveRequest::route('/{record}/edit'),
+            // 'create' => Pages\CreateLeaveRequest::route('/create'),
+            // 'edit' => Pages\EditLeaveRequest::route('/{record}/edit'),
         ];
     }
 

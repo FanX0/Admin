@@ -10,7 +10,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use App\Filament\Resources\EmployeeResource\RelationManagers\SalariesRelationManager;
-
+use Filament\Actions\EditAction;
 
 class SalaryResource extends Resource
 {
@@ -33,7 +33,7 @@ class SalaryResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -28,4 +28,10 @@ class LeaveRequest extends Model
         $this->status=  LeaveRequestStatus::APPROVED;
         $this->save();
     }
+
+    public function reject(): void
+    {
+        $this->status=  LeaveRequestStatus::REJECTED;
+        $this->save();
+    }
 }
