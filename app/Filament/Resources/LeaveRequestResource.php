@@ -5,7 +5,9 @@ namespace App\Filament\Resources;
 use App\Enums\LeaveRequestStatus;
 use App\Filament\Resources\EmployeeResource\RelationManagers\LeaveRequestsRelationManager;
 use App\Filament\Resources\LeaveRequestResource\Pages;
+use App\Filament\Resources\LeaveRequestResource\Widgets\LeaveRequestStats;
 use App\Models\LeaveRequest;
+use App\Traits\DefaultCounterNavigationBadge;
 use Filament\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms;
@@ -19,6 +21,7 @@ use Illuminate\Support\Collection;
 
 class LeaveRequestResource extends Resource
 {
+    use DefaultCounterNavigationBadge;
     protected static ?string $model = LeaveRequest::class;
     protected static ?string $navigationGroup = 'Employee Management';
     protected static ?int $navigationSort = 3;
@@ -189,4 +192,13 @@ class LeaveRequestResource extends Resource
                 ->toggleable(isToggledHiddenByDefault: true),
         ];
     }
+
+    public static function getWidgets(): array
+    {
+        return [
+            LeaveRequestStats::class,
+        ];
+    }
+   
+  
 }

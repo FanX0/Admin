@@ -21,7 +21,7 @@ class SalaryFactory extends Factory
     public function definition(): array
     {
         return [
-            'employee_id' => Employee::factory(),
+            'employee_id' => rand(1,10),
             'amount' => $this->faker->numberBetween(-10000, 10000),
             'effective_date' => $this->faker->date(),
         ];

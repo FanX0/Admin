@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\DepartmentResource\Pages;
 use App\Models\Department;
+use App\Traits\DefaultCounterNavigationBadge;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,6 +13,7 @@ use Filament\Tables\Table;
 
 class DepartmentResource extends Resource
 {
+    use DefaultCounterNavigationBadge;
     protected static ?string $model = Department::class;
     protected static ?string $navigationGroup = 'Resources';
     protected static ?string $navigationIcon = 'heroicon-o-home-modern';

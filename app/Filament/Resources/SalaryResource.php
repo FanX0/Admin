@@ -10,10 +10,13 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use App\Filament\Resources\EmployeeResource\RelationManagers\SalariesRelationManager;
-use Filament\Actions\EditAction;
+use App\Traits\DefaultCounterNavigationBadge;
+use Filament\Tables\Actions\EditAction;
+use Filament\Tables\Columns\Summarizers\Sum;
 
 class SalaryResource extends Resource
 {
+    use DefaultCounterNavigationBadge;
     protected static ?string $model = Salary::class;
     protected static ?string $navigationGroup = 'Employee Management';
     protected static ?int $navigationSort = 2;
@@ -87,7 +90,11 @@ class SalaryResource extends Resource
             Tables\Columns\TextColumn::make('amount')
                 ->numeric()
                 ->prefix('Rp. ')
-                ->sortable(),
+                ->sortable()
+                ->summarize(
+                    Sum::make('amount')
+                        ->money('IDR'),
+                ),
             Tables\Columns\TextColumn::make('effective_date')
                 ->date()
                 ->sortable(),

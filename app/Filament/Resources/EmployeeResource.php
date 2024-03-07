@@ -19,6 +19,7 @@ use Filament\Infolists\Components\Group;
 
 class EmployeeResource extends Resource
 {
+    protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $model = Employee::class;
     protected static ?string $label = 'Karyawan';
     protected static ?string $navigationGroup = 'Employee Management';
@@ -80,12 +81,12 @@ class EmployeeResource extends Resource
         return $table
             ->defaultSort('joined', 'desc')
             ->columns([
-                Tables\Columns\TextColumn::make('department.name')
-                    ->description(fn ($record) => 'Position: ' . $record->position->name)
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('name')
                     ->description(fn (Employee $record) => $record->email)
                     ->searchable(),
+                Tables\Columns\TextColumn::make('department.name')
+                    ->description(fn ($record) => 'Position: ' . $record->position->name)
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('joined')
                     ->date()
                     ->formatStateUsing(fn ($state) =>$state->format('d F Y'))
@@ -169,5 +170,10 @@ class EmployeeResource extends Resource
             ]),
 
         ]);
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return static::$model::where('status',EmployeeStatus::ACTIVE)->count();
     }
 }

@@ -25,6 +25,12 @@ class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->databaseNotifications()
+            ->profile()
+            // ->registration()
+            // ->passwordReset()
+            ->brandLogo(asset('logo/fanx.png'))
+            ->brandLogoHeight('50px')
             ->login()
             ->colors([
                 'primary' => Color::Blue,
@@ -58,6 +64,8 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->sidebarCollapsibleOnDesktop()
+            ;
     }
 }

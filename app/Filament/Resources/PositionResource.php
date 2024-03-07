@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PositionResource\Pages;
 use App\Models\Position;
+use App\Traits\DefaultCounterNavigationBadge;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -12,6 +13,9 @@ use Filament\Tables\Table;
 
 class PositionResource extends Resource
 {
+    
+    use DefaultCounterNavigationBadge;
+    protected static ?string $recordTitleAttribute = 'name';
     protected static ?string $model = Position::class;
     protected static ?string $navigationGroup = 'Resources';
     protected static ?string $navigationIcon = 'heroicon-o-hashtag';
@@ -19,7 +23,7 @@ class PositionResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema();
+            ->schema(self::getFormFields());
     }
 
     public static function getFormFields(): array
